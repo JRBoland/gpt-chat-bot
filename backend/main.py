@@ -9,6 +9,7 @@ from decouple import config
 import openai
 
 # custom function imports
+from functions.database import store_messages
 from functions.openai_requests import convert_audio_to_text, get_chat_response
 
 # initiate app
@@ -49,15 +50,18 @@ async def get_audio():
     # Get saved audio
     audio_input = open("voice.mp3", "rb")
 
-    # Decode audio
+    # Decode audio (from functions)
     message_decoded = convert_audio_to_text(audio_input)
 
     # Guard: Ensure message decoded
     if not message_decoded:
         return HTTPException(status_code=400, details="Failed to decode audio")
 
-    # Get ChatGPT response
+    # Get ChatGPT response (from functions)
     chat_response = get_chat_response(message_decoded)
+
+    # Store messages
+    store_messages(message_decoded, chat_response)
 
     print(chat_response)
 
