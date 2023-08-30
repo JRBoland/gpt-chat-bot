@@ -52,9 +52,6 @@ async def reset_conversation():
 # Get audio
 @app.post("/post-audio/")
 async def post_audio(file: UploadFile = File(...)):
-
-    
-
     # Get saved audio
     # audio_input = open("voice.mp3", "rb")
 
